@@ -13,6 +13,13 @@ const hash_password = async (password) => {
   return null;
 };
 
+const CheckPassword = async (password, user_password) => {
+  try {
+    return bcrypt.compare(password, user_password);
+  } catch (error) {
+    console.log(error.message);
+  }
+};
 const AddNewUser = async (req, res, next) => {
   const { name, email, password, role } = req.body;
   const encrypted_password = await hash_password(password);
@@ -125,10 +132,40 @@ const DeleteUser = async (req, res, next) => {
   }
 };
 
+const LoginUser = async (req, res, next) => {
+  const { email, password } = req.body;
+  try {
+    const find_user = await User.findOne({
+      where: { email },
+    });
+    // * We'll check if the user exist in the DB or not.
+    if (!find_user) {
+      return next(CreateError.NotFound("User desn't exist"));
+    }
+    // * We'll check if the user has entered the correct password.
+
+    const user_password = find_user.password;
+    const password_matched = await CheckPassword(password, user_password);
+
+    if (!password_matched) {
+      return next(
+        CreateError.Unauthorized("Login failed,you are unauthorized")
+      );
+    }
+    res.status(200).send({
+      success: true,
+      message: "Login successful",
+    });
+  } catch (error) {
+    next(CreateError.InternalServerError(error.message));
+  }
+};
+
 module.exports = {
   AddNewUser,
   GetAllUsers,
   GetUserById,
   UpdateUser,
   DeleteUser,
+  LoginUser,
 };

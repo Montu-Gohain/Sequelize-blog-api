@@ -5,6 +5,7 @@ const {
   GetAllUsers,
   GetUserById,
   UpdateUser,
+  LoginUser,
 } = require("../controllers/userController");
 
 const router = Router();
@@ -14,5 +15,6 @@ router.get("/:uuid", GetUserById);
 router.post("/register", AddNewUser);
 router.patch("/:uuid", UpdateUser);
 router.delete("/:uuid", DeleteUser);
+router.post("/login", LoginUser);
 
 module.exports = router;
