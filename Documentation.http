@@ -1,0 +1,75 @@
+Step 1 : Run sequelize init and put the appropriate values in the config
+Step 2 : Install node modules by npm i or yarn add
+Step 3 : Let's talk about our Endpoints.
+
+
+1. Home endpoint : To check if our server is working or not.
+
+GET http://localhost:<port>/home
+
+2. Create user endpoint :
+
+POST http://localhost:6060/api/users/register
+
+example payload : 
+{
+	"name": "Kim Jung",
+	"email" : "kim@gmail.com",
+	"password": "topsecret",
+	"role" : "DICATOR"
+}
+
+3. Get all users endpoint : 
+
+GET  http://localhost:6060/api/users
+
+4. Get user by ID : 
+
+GET http://localhost:6060/api/users/<uuid>
+
+5. Update user endpoint : 
+
+PATCH http://localhost:6060/api/users/<uuid>
+
+example payload :
+{
+	"name": "Kim Jung Uno",
+	"role" : "DICTATOR/TERRIFFIER "
+}
+
+6. Delete user
+
+DELETE http://localhost:6060/api/users/<uuid>
+
+-------------------- -------- ------------------- ------------------ -------------------------
+
+7 . Create post endpoint
+
+POST http://localhost:6060/api/posts/
+
+example payload : 
+{
+	"body" : "This is a bad post",
+	"userUuid" : "60b70a92-08fd-44c3-a569-74f434ace776"
+}
+
+8 . Get all post endpoint
+
+GET http://localhost:6060/api/posts
+
+9. Get post by id
+
+GET http://localhost:6060/api/posts/<uuid>
+
+10. Update post by id
+
+PATCH http://localhost:6060/api/posts/<uuid>
+
+example payload 
+{
+	"body": "I am from Korea not north from the South one."
+}
+
+11, Delete post by Id
+
+DELETE  http://localhost:6060/api/posts/<uuid>
