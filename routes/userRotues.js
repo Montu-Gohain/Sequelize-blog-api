@@ -7,10 +7,11 @@ const {
   UpdateUser,
   LoginUser,
 } = require("../controllers/userController");
+const { verifyAccessToken } = require("../helpers/jwt_helper");
 
 const router = Router();
 
-router.get("/", GetAllUsers);
+router.get("/", verifyAccessToken, GetAllUsers);
 router.get("/:uuid", GetUserById);
 router.post("/register", AddNewUser);
 router.patch("/:uuid", UpdateUser);

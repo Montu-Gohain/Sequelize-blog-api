@@ -1,6 +1,12 @@
 const { User, Post } = require("../models");
 const CreateError = require("http-errors");
 const bcrypt = require("bcryptjs");
+const {
+  signAccessToken,
+  signRefreshToken,
+  verifyAccessToken,
+  verifyRefreshToken,
+} = require("../helpers/jwt_helper");
 
 const hash_password = async (password) => {
   try {
@@ -40,11 +46,14 @@ const AddNewUser = async (req, res, next) => {
       role,
       password: encrypted_password,
     });
-
+    const access_token = await signAccessToken(new_user.uuid);
+    const refresh_token = await signRefreshToken(new_user.uuid);
     res.status(201).send({
       success: true,
       message: "New user created successsfully.",
       data: new_user,
+      access_token,
+      refresh_token,
     });
   } catch (error) {
     next(CreateError.InternalServerError(error.message));
@@ -152,9 +161,13 @@ const LoginUser = async (req, res, next) => {
         CreateError.Unauthorized("Login failed,you are unauthorized")
       );
     }
+    const access_token = await signAccessToken(find_user.uuid);
+    const refresh_token = await signRefreshToken(find_user.uuid);
     res.status(200).send({
       success: true,
       message: "Login successful",
+      access_token,
+      refresh_token,
     });
   } catch (error) {
     next(CreateError.InternalServerError(error.message));

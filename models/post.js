@@ -12,6 +12,15 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
       this.belongsTo(User, { foreignKey: "userId", as: "user" });
     }
+    toJSON() {
+      // * Some of the things are not supposed to expose to the client so let's hide them
+      return {
+        ...this.get(),
+        id: undefined,
+        uuid: undefined,
+        userId: undefined,
+      };
+    }
   }
   Post.init(
     {
